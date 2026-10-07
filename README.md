@@ -3,6 +3,8 @@
 > Your Hermes sessions, visualized as tiny humans in a cozy 2-floor 3D office.
 > Every session walks in, sits down, types, drinks coffee, prays, takes the lift — and you watch it all live.
 
+![Hermes Office demo](docs/demo.gif)
+
 ![Node](https://img.shields.io/badge/node-18%2B-3ddc84?style=flat-square&logo=node.js)
 ![Deps](https://img.shields.io/badge/backend-0%20dependencies-e8b93c?style=flat-square)
 ![Three.js](https://img.shields.io/badge/three.js-vendored-3f8cff?style=flat-square)
