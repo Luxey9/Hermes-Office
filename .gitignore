@@ -1,0 +1,4 @@
+office.log
+.collector.pid
+node_modules/
+*.pid

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hermes Live</title>
+<link rel="icon" type="image/png" href="logo.png?v=2">
+<link rel="apple-touch-icon" href="logo.png?v=2">
+<link rel="stylesheet" href="style.css?v=2">
+<script type="importmap">
+{ "imports": {
+  "three": "./vendor/three.module.js",
+  "three/addons/": "./vendor/"
+} }
+</script>
+</head>
+<body>
+<div class="ho-wrap">
+  <div class="ho-bar">
+    <span class="ho-title"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="currentColor" opacity="0.9"/><rect x="4" y="4" width="4" height="4" fill="#0d0f16" opacity="0.55"/></svg>Hermes Live <span style="opacity:.45;font-size:11px">3D</span></span>
+    <span class="ho-conn off" id="hoConn"></span>
+    <span class="ho-count" id="hoConnText" data-i18n="connecting">menghubungkan…</span>
+    <span class="ho-sep">•</span>
+    <span class="ho-count" id="hoCount">0 aktif</span>
+    <span class="ho-mission"><span class="ho-mdot" id="hoMdot"></span><span id="hoMtext" data-i18n="waitingMission">Menunggu misi…</span></span>
+    <span class="ho-sp"></span>
+    <button id="hoLang" type="button" title="Ganti bahasa / Switch language">ID</button>
+    <button id="hoPause" type="button">Pause</button>
+    <button id="hoRestart" type="button">▶ Demo</button>
+    <button id="hoClear" type="button" data-i18n="clear">Clear</button>
+    <button id="hoSound" type="button">Sound: on</button>
+    <button id="hoBg" type="button">Ambience: off</button>
+  </div>
+  <div class="ho-apanel" id="hoApanel"></div>
+  <div class="ho-followchip" id="hoFollowChip" style="display:none">👁&nbsp;<span id="hoFollowName"></span><button id="hoFollowStop" type="button">⏹</button></div>
+  <div class="ho-errbar" id="hoErrbar" style="display:none"><span class="ho-errdot"></span><span id="hoErrText"></span><span class="ho-sp"></span><button id="hoErrClear" type="button">✕</button></div>
+  <div class="ho-tools">
+    <span data-i18n="filter">Filter:</span>
+    <button data-f="" class="on" type="button" data-i18n-filter="all">All</button><button data-f="main" type="button">Main</button><button data-f="sub" type="button">Sub</button><button data-f="worker" type="button">Worker</button>
+    <span class="ho-tsep"></span>
+    <button id="hoZoomOut" type="button">−</button><button id="hoZoomIn" type="button">+</button>
+    <button id="hoResetView" type="button">⤢ Reset</button>
+    <button id="hoTop" type="button">Denah: off</button>
+    <button id="hoRain" type="button">Hujan: off</button>
+    <button id="hoFloor" type="button">Lihat: Semua</button>
+    <span class="ho-tsep"></span>
+    <span style="opacity:.5;font-size:11px" data-i18n="hint">drag: orbit • scroll: zoom • klik agen: follow</span>
+  </div>
+  <div class="ho-main">
+    <canvas id="hoCv" width="1560" height="720"></canvas>
+    <aside class="ho-side">
+      <div class="ho-tabs"><button id="hoTabLog" class="on" type="button" data-i18n="activityLog">Log Activity</button><button id="hoTabLive" type="button" data-i18n="live">Live</button><span class="ho-sp"></span><span class="ho-page" id="hoAgentsCountTop" style="display:none"></span></div>
+      <div class="ho-alog" id="hoPaneLog"><div class="ho-alog-head"><button id="hoLogPrev" type="button">‹</button><span class="ho-page" id="hoLogPage">1/1</span><button id="hoLogNext" type="button">›</button><span class="ho-sp"></span><button id="hoLogClear" type="button" data-i18n="clear">Clear</button></div><div class="ho-alog-list" id="hoAlog"></div></div>
+      <div class="ho-alog" id="hoPaneLive" style="display:none"><div class="ho-alog-head"><span data-i18n="live">Live</span><span class="ho-sp"></span><button id="hoLiveClear" type="button" data-i18n="clear">Clear</button></div><div class="ho-alog-list" id="hoMlog"></div></div>
+      <div class="ho-agents"><div class="ho-agents-head"><button id="hoAgentsPrev" type="button">‹</button><span class="ho-page" id="hoAgentsPage">1/1</span><button id="hoAgentsNext" type="button">›</button><span data-i18n="agents" style="margin-left:6px">Agents</span><span class="ho-sp"></span><span class="ho-page" id="hoAgentsCount">0</span></div><div class="ho-agents-list" id="hoAgents"></div></div>
+    </aside>
+  </div>
+  <audio id="hoAudio" src="/backsound.mp3" loop style="display:none"></audio>
+  <div class="ho-shortcut" id="hoShortcut"></div>
+</div>
+<div id="hoToasts"></div>
+<script type="module" src="office3d.js?v=3d21"></script>
+</body>
+</html>

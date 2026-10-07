@@ -1,0 +1,62 @@
+# Hermes Office — hooks Hermes -> dashboard
+# Tempel / gabungkan ke:  %USERPROFILE%\.hermes\config.yaml   (Windows)
+#                          ~/.hermes/config.yaml              (Linux/macOS)
+#
+# FORMAT PENTING: `hooks:` adalah mapping  event -> list entri,
+#   BUKAN list berisi {event, command}. Contoh yang benar:
+#
+#     hooks:
+#       pre_tool_call:
+#         - command: "curl ..."
+#
+# Setiap tool call / session event Hermes akan mem-pipe JSON ke stdin
+# command di bawah, misal:
+#   {"hook_event_name":"pre_tool_call","tool_name":"terminal",
+#    "tool_input":{...},"session_id":"sess_abc","cwd":"C:\\proj"}
+# `curl -d @-` membaca JSON itu dari stdin dan POST ke collector lokal,
+# yang lalu disiarkan ke dashboard via SSE.
+#
+# Catatan consent (penting!): Hermes meminta persetujuan sekali per hook
+# saat pertama dipakai, dicatat di ~/.hermes/shell-hooks-allowlist.json.
+# Kalau hook tidak jalan, pilih salah satu:
+#   - setujui sekali saat Hermes bertanya di terminal, atau
+#   - tambah `hooks_auto_accept: true` di config, atau
+#   - jalankan Hermes dengan `hermes --accept-hooks`
+# Verifikasi:  hermes hooks list  /  hermes hooks doctor
+
+hooks:
+  # Karakter jalan masuk & duduk di meja
+  on_session_start:
+    - command: "curl -s -m 5 -X POST http://127.0.0.1:3456/hook -H Content-Type:application/json -d @-"
+      timeout: 10
+
+  # Bubble "lagi kerja": tiap tool call menampilkan nama tool
+  pre_tool_call:
+    - command: "curl -s -m 5 -X POST http://127.0.0.1:3456/hook -H Content-Type:application/json -d @-"
+      timeout: 10
+
+  # Kembali idle setelah tool selesai — via wrapper penanda error otomatis
+  # (sukses diteruskan biasa, gagal jadi banner merah 🚨 di dashboard).
+  # Wrapper: <repo>/scripts/hook-post.sh — ganti path di bawah dgn lokasimu.
+  post_tool_call:
+    - command: "bash \"C:/Users/MyBook Hype AMD/Documents/File Faqod/Hermes Office/hermes-office/scripts/hook-post.sh\""
+      timeout: 10
+
+  # Subagent: karakter anak muncul / hilang
+  subagent_start:
+    - command: "curl -s -m 5 -X POST http://127.0.0.1:3456/hook -H Content-Type:application/json -d @-"
+      timeout: 10
+  subagent_stop:
+    - command: "curl -s -m 5 -X POST http://127.0.0.1:3456/hook -H Content-Type:application/json -d @-"
+      timeout: 10
+
+  # Karakter jalan keluar saat session selesai
+  on_session_end:
+    - command: "curl -s -m 5 -X POST http://127.0.0.1:3456/hook -H Content-Type:application/json -d @-"
+      timeout: 10
+
+  # Chat biasa (tanpa tool call): karakter "ngomong" — bubble 💬 + mulut gerak
+  # Sesuaikan nama event dengan hook message di Hermes-mu (contoh: on_message_end)
+  # on_message_end:
+  #   - command: "curl -s -m 5 -X POST http://127.0.0.1:3456/hook -H Content-Type:application/json -d @-"
+  #     timeout: 10
